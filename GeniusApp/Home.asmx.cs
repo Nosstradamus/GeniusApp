@@ -76,7 +76,7 @@ namespace GeniusApp
                     break;
                 default:
                     //If none of above types were found, its output we arent concerned with
-                    result = "Your search did not yield any results.";
+                    result = "Your search did not yield any results.~~~~~";
                     break;
 
 
