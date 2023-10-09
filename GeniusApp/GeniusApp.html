@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Genius App Input Form</title>
+</head>
+<body>
+    <h1>Muic Look-Up Powered by Genius.com</h1>
+
+    <!-- Input Form -->
+    <form id="searchForm">
+        <label for="param1">Enter Search Term:</label>
+        <input type="text" id="input" name="input" required><br>
+        <input type="submit" value="Submit">
+    </form>
+    <!--Create Picture Box, display Genius Logo to start-->
+    <div id="pictureBox">
+        <img id="pic" src="https://upload.wikimedia.org/wikipedia/commons/5/51/Genius-logo.png?20170510193836" alt="Placeholder Image">
+    </div>
+
+    <!-- Display Result -->
+    <div id="result1"> </div>
+    <div id="result2"> </div>
+    <div id="result3"> </div>
+    <div id="result4"> </div>
+    <div id="result5"> </div>
+
+    <script>
+        // Add an event listener to the form submit event
+        document.getElementById('searchForm').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            // Get the user input from the input fields
+            const param1 = document.getElementById('input').value;
+
+            // Send a POST request to the Home ASMX service using fetch
+            fetch('Home.asmx/Search', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                // Set parameter 
+                body: `input=${encodeURIComponent(param1)}`,
+            })
+                .then(response => response.text())
+                .then(data => {
+                    //Split string using delimeter
+                    const myArray = data.split("~");
+                    
+                    // Display the result from the ASMX service
+                    document.getElementById('result1').innerHTML = myArray[0];
+                    document.getElementById('result2').innerHTML = myArray[2];
+                    document.getElementById('result3').innerHTML = myArray[3];
+                    document.getElementById('result4').innerHTML = myArray[4];
+                    document.getElementById('result5').innerHTML = myArray[5];
+                    // If myArray[1] is not null it contains a URL
+                    if (myArray[1].length != 0)
+                        document.getElementById('pic').setAttribute("src", myArray[1]);
+                    // if no URL default back to genius Logo
+                    else if (myArray[1].length == 0)
+                        document.getElementById('pic').setAttribute("src", "https://upload.wikimedia.org/wikipedia/commons/5/51/Genius-logo.png?20170510193836");
+
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
+    </script>
+
+</body>
+</html>
