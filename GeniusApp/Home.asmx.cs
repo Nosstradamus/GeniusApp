@@ -45,19 +45,21 @@ namespace GeniusApp
 
             //string for output
             string result;
+            String type;
+            String id;
             try
             {
                 //Decodes JSON using class definitions below
                 SearchRootObject searchResult = JsonConvert.DeserializeObject<SearchRootObject>(response.Content);
                 //Strings to call appropriate decode class.
-                String type = searchResult.Sections[0].Hits[0].Type;
-                String id = searchResult.Sections[0].Hits[0].Result.Id.ToString();
+                type = searchResult.Sections[0].Hits[0].Type;
+                id = searchResult.Sections[0].Hits[0].Result.Id.ToString();
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
-                String type = "unknow";
-                String id = "0";
+                type = "unknow";
+                id = "0";
             }
             //Create class objects
             GetArtistInfo artist = new GetArtistInfo();
